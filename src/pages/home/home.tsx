@@ -1,163 +1,138 @@
-import { FC, useEffect } from 'react'
-import { block, push, replace, useActionRef } from '@itznevikat/router'
+import { push } from '@itznevikat/router'
+import axios from 'axios'
+import { FC, useEffect, useState } from 'react'
 import {
-  Icon24Spinner,
-  Icon28ArticleOutline,
-  Icon28CancelCircleOutline,
-  Icon28CheckCircleOutline,
-  Icon28ChevronRightOutline,
-  Icon28CompassOutline,
-  Icon28ErrorOutline,
-  Icon28GhostOutline,
-  Icon28PawOutline,
-  Icon28WarningTriangleOutline
+  Icon24Add,
+  Icon28LightbulbOutline,
+  Icon28LogoVkColor,
+  Icon28MoonOutline,
+  Icon28SunOutline
 } from '@vkontakte/icons'
 import { send } from '@vkontakte/vk-bridge'
 import {
-  Avatar,
-  Gradient,
+  CellButton,
+  Div,
   Group,
   NavIdProps,
   Panel,
   PanelHeader,
+  PanelHeaderButton,
   SimpleCell,
-  Text,
-  Title,
-  VKCOM,
-  usePlatform
+  Spacing,
+  Subhead,
+  Switch,
+  Title
 } from '@vkontakte/vkui'
-import { classNamesString } from '@vkontakte/vkui/dist/lib/classNames'
-
-import { ErrorSnackbar, SuccessSnackbar } from '../../components'
-
-import styles from './home.module.css'
-import { useSnackbar, useUser } from '../../hooks'
+import { ErrorSnackbar, FriendList } from '../../components'
+import { useFriends, useSnackbar, useUser } from '../../hooks'
+import { useTheme } from '../../hooks'
+import { ProfileCard } from './components'
+import styles from './home.module.pcss'
 
 export const Home: FC<NavIdProps> = (props) => {
-  const platform = usePlatform()
-
-  const { user, setUser } = useUser()
+  const { setUser } = useUser()
+  const { friends, setFriends } = useFriends()
+  const [flashlightAvailable, setFlashlightAvailable] = useState(false)
+  const [flashlightEnabled, setFlashlightEnabled] = useState(false)
   const { setSnackbar } = useSnackbar()
-
-  const { setActionRefHandler } = useActionRef(() =>
-    push('/?popout=test-action-sheet')
-  )
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
-    send('VKWebAppGetUserInfo').then((value) => setUser(value))
+    console.log('App2: ', theme)
+  }, [theme])
+
+  useEffect(() => {
+    Promise.all([
+      send('VKWebAppGetUserInfo').then((value) => setUser(value)),
+      send('VKWebAppFlashGetInfo').then((value) =>
+        setFlashlightAvailable(value.is_available)
+      ),
+      axios.get('https://jsonplaceholder.typicode.com/users').then((r) => {
+        setFriends(r.data)
+      })
+    ])
   }, [])
 
-  const openScreenSpinner = async (): Promise<void> => {
-    replace('/?popout=screen-spinner')
-
-    const unblock = block(() => void 0)
-
-    // Загрузка данных
-    setTimeout(() => {
-      // Разблокировка
-      unblock()
-      replace('/')
-    }, 2000)
+  const toggleFlashlight = () => {
+    send('VKWebAppFlashSetLevel', { level: flashlightEnabled ? 0 : 1 }).then(
+      () => setFlashlightEnabled(!flashlightEnabled)
+    )
   }
 
   return (
     <Panel {...props}>
-      <PanelHeader>Главная</PanelHeader>
-
-      <Group>
-        <Gradient
-          className={classNamesString(
-            styles.gradient,
-            platform === VKCOM && styles.gradientDesktop
-          )}
+      <PanelHeader
+        before={
+          <PanelHeaderButton
+            onClick={() => {
+              setTheme(theme === 'light' ? 'dark' : 'light')
+            }}
+          >
+            {theme === 'light' ? <Icon28MoonOutline /> : <Icon28SunOutline />}
+          </PanelHeaderButton>
+        }
+      >
+        <Title
+          level="2"
+          weight="medium"
+          style={{ display: 'flex', alignItems: 'center' }}
         >
-          <Avatar src={user?.photo_100} size={96} />
-          <Title className={styles.gradientTitle} level="2" weight="2">
-            {!user && 'Загрузка...'}
-            {user?.first_name} {user?.last_name}
-          </Title>
-          <Text weight="regular" className={styles.gradientSecondary}>
-            Пользователь
-          </Text>
-        </Gradient>
+          <Icon28LogoVkColor />
+          ui
+        </Title>
+      </PanelHeader>
 
-        <Group mode="plain">
+      <Group padding={'m'}>
+        <ProfileCard />
+        <Spacing size={12} />
+        <Group mode={'plain'}>
           <SimpleCell
-            before={<Icon28PawOutline />}
-            after={<Icon28ChevronRightOutline />}
-            onClick={() => push('/persik')}
+            before={<Icon28LightbulbOutline />}
+            Component="label"
+            after={
+              <Switch
+                disabled={!flashlightAvailable}
+                onChange={toggleFlashlight}
+                checked={flashlightEnabled}
+              />
+            }
+            subtitle="На телефоне включится фонарик"
+            onClick={() => {
+              if (!flashlightAvailable) {
+                setSnackbar(
+                  <ErrorSnackbar>
+                    Я не могу включить ваш фонарик, возможно его просто нету =(
+                  </ErrorSnackbar>
+                )
+              }
+            }}
           >
-            Перейти к Персику
-          </SimpleCell>
-
-          <SimpleCell
-            before={<Icon28CompassOutline />}
-            after={<Icon28ChevronRightOutline />}
-            onClick={() => push('/components')}
-          >
-            Перейти к компонентам
-          </SimpleCell>
-
-          <SimpleCell
-            before={<Icon28ErrorOutline />}
-            after={<Icon28ChevronRightOutline />}
-            onClick={() => push('/abobus')}
-          >
-            Перейти к 404 странице
+            Больше света!
           </SimpleCell>
         </Group>
       </Group>
 
       <Group>
-        <SimpleCell
-          before={<Icon28GhostOutline />}
-          onClick={() => push('/?modal=test-modal-card')}
-        >
-          Показать модальную карточку
-        </SimpleCell>
-      </Group>
-
-      <Group>
-        <SimpleCell
-          before={<Icon28ArticleOutline />}
-          onClick={setActionRefHandler}
-        >
-          Показать действия
-        </SimpleCell>
-
-        <SimpleCell
-          before={<Icon28WarningTriangleOutline />}
-          onClick={() => push('/?popout=test-alert')}
-        >
-          Показать предупреждение
-        </SimpleCell>
-
-        <SimpleCell
-          before={<Icon24Spinner width={28} />}
-          onClick={openScreenSpinner}
-        >
-          Показать экран загрузки
-        </SimpleCell>
-      </Group>
-
-      <Group>
-        <SimpleCell
-          before={<Icon28CheckCircleOutline />}
-          onClick={() =>
-            setSnackbar(<SuccessSnackbar>Произошёл успех</SuccessSnackbar>)
-          }
-        >
-          Показать добрый снекбар
-        </SimpleCell>
-
-        <SimpleCell
-          before={<Icon28CancelCircleOutline />}
-          onClick={() =>
-            setSnackbar(<ErrorSnackbar>Произошла ошибка</ErrorSnackbar>)
-          }
-        >
-          Показать злой снекбар
-        </SimpleCell>
+        <Div className={styles.friendListContainer}>
+          <Div className={styles.title}>
+            <Title level={'3'}>Друзья</Title>
+            <Subhead
+              style={{
+                color: 'var(--text_secondary)'
+              }}
+            >
+              {friends?.length}
+            </Subhead>
+          </Div>
+          <FriendList friends={friends.slice(0, 3)} />
+          <CellButton
+            centered
+            before={<Icon24Add />}
+            onClick={() => push('/friends')}
+          >
+            Показать всех друзей
+          </CellButton>
+        </Div>
       </Group>
     </Panel>
   )

@@ -1,26 +1,17 @@
 import { FC, Fragment } from 'react'
 
-import {
-  Epic,
-  Match,
-  ModalRoot,
-  View,
-  matchPopout,
-  useParams
-} from '@itznevikat/router'
-import { Icon28HomeOutline, Icon28InfoOutline } from '@vkontakte/icons'
+import { Epic, Match, ModalRoot, View } from '@itznevikat/router'
+import { Icon28NewsfeedLinesOutline, Icon28Profile } from '@vkontakte/icons'
 import {
   PanelHeader,
-  ScreenSpinner,
   SplitCol,
   SplitLayout,
   VKCOM,
   usePlatform
 } from '@vkontakte/vkui'
 
-import { Components, Fallback, Home, Info, Persik } from '../../pages'
-import { TestModalCard } from '../../modals'
-import { TestActionSheet, TestAlert } from '../../popouts'
+import { AllFriends, Fallback, Home, PlaceholderPage } from '../../pages'
+import { PlaceholderModal } from '../../modals'
 import { useSnackbar } from '../../hooks'
 
 import { LayoutButton } from './button'
@@ -29,18 +20,17 @@ import { LayoutTabbar } from './tabbar'
 
 const Nav: FC = () => (
   <Fragment>
-    <LayoutButton story="/" before={<Icon28HomeOutline />}>
-      Главная
+    <LayoutButton story="/placeholder" before={<Icon28NewsfeedLinesOutline />}>
+      Placeholder
     </LayoutButton>
-    <LayoutButton story="/info" before={<Icon28InfoOutline />}>
-      О приложении
+    <LayoutButton story="/" before={<Icon28Profile />}>
+      Профиль
     </LayoutButton>
   </Fragment>
 )
 
 export const Layout: FC = () => {
   const platform = usePlatform()
-  const { popout } = useParams()
   const { snackbar } = useSnackbar()
 
   return (
@@ -49,15 +39,9 @@ export const Layout: FC = () => {
         header={platform !== VKCOM && <PanelHeader separator={false} />}
         modal={
           <ModalRoot>
-            <TestModalCard nav="test-modal-card" />
+            <PlaceholderModal nav="placeholder-modal" />
           </ModalRoot>
         }
-        /* eslint-disable react/jsx-key */
-        popout={matchPopout(popout, [
-          <ScreenSpinner id="screen-spinner" />,
-          <TestActionSheet nav="test-action-sheet" />,
-          <TestAlert nav="test-alert" />
-        ])}
         style={{
           justifyContent: 'center'
         }}
@@ -78,16 +62,14 @@ export const Layout: FC = () => {
               )
             }
           >
-            <View nav="/">
-              <Home nav="/" />
-              <Persik nav="/persik" />
-              <Components nav="/components" />
-
-              <Fallback nav="/404" />
+            <View nav="/placeholder">
+              <PlaceholderPage nav="/" />
             </View>
 
-            <View nav="/info">
-              <Info nav="/" />
+            <View nav="/">
+              <Home nav="/" />
+              <AllFriends nav="/friends" />
+              <Fallback nav="/404" />
             </View>
           </Epic>
 
