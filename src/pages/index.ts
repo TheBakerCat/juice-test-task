@@ -1,0 +1,5 @@
+export * from './home'
+export * from './persik'
+export * from './components'
+export * from './info'
+export * from './fallback'

@@ -1,0 +1,43 @@
+{
+  "name": "vkma-template",
+  "version": "1.0.0",
+  "description": "📍 Шаблон для мини-приложений",
+  "license": "MIT",
+  "author": "Nikita Koshelenko <nikitakoschelenko@gmail.com>",
+  "scripts": {
+    "build": "tsc && vite build",
+    "deploy": "vk-miniapps-deploy",
+    "dev": "vite",
+    "lint": "eslint --fix ./src/",
+    "format": "prettier --write ./src/",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@itznevikat/router": "0.1.0-beta28",
+    "@vkontakte/icons": "^1.205.0",
+    "@vkontakte/vk-bridge": "npm:@mntm/painless-bridge@4.0.0",
+    "@vkontakte/vkjs": "^0.28.0",
+    "@vkontakte/vkui": "^4.39.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "@vitejs/plugin-basic-ssl": "^0.1.2",
+    "@vitejs/plugin-legacy": "^2.3.1",
+    "@vitejs/plugin-react": "^2.2.0",
+    "@vkontakte/vk-miniapps-deploy": "^0.0.26",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "prettier": "^2.8.0",
+    "terser": "^5.16.0",
+    "typescript": "^4.9.3",
+    "typescript-plugin-css-modules": "^3.4.0",
+    "vite": "^3.2.4"
+  }
+}
