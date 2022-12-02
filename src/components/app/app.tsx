@@ -15,6 +15,7 @@ import { currentPlatform } from '../../utils'
 
 import '@vkontakte/vkui/dist/vkui.css'
 import './app.css'
+import { FriendsProvider } from '../friends-provider'
 
 export const App: FC = () => {
   const [platform, setPlatform] = useState<Platform>(currentPlatform)
@@ -24,6 +25,7 @@ export const App: FC = () => {
     const updateAppearance = (config: VKUpdateConfigData) => {
       if (config.appearance) {
         setAppearance(config.appearance)
+        console.log('Appearance changed:', config.appearance)
       }
     }
 
@@ -63,7 +65,9 @@ export const App: FC = () => {
         <AppRoot noLegacyClasses>
           <SnackbarProvider>
             <UserProvider>
-              <Layout />
+              <FriendsProvider>
+                <Layout />
+              </FriendsProvider>
             </UserProvider>
           </SnackbarProvider>
         </AppRoot>

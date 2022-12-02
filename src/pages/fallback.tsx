@@ -1,14 +1,15 @@
+import { Icon48Game } from '@vkontakte/icons'
 import { FC } from 'react'
-import { back } from '@itznevikat/router'
+import { back, push } from '@itznevikat/router'
 import {
+  Button,
   Group,
   NavIdProps,
   Panel,
   PanelHeader,
-  PanelHeaderBack
+  PanelHeaderBack,
+  Placeholder
 } from '@vkontakte/vkui'
-
-import { VoidPlaceholder } from '../components'
 
 export const Fallback: FC<NavIdProps> = (props) => {
   return (
@@ -16,7 +17,17 @@ export const Fallback: FC<NavIdProps> = (props) => {
       <PanelHeader before={<PanelHeaderBack onClick={back} />}>404</PanelHeader>
 
       <Group>
-        <VoidPlaceholder />
+        <Placeholder
+          icon={<Icon48Game />}
+          title={'Как так?'}
+          action={
+            <Button size={'l'} onClick={() => push('/')}>
+              Нажми на меня
+            </Button>
+          }
+        >
+          УУпс, здесь ничего нету!! :(
+        </Placeholder>
       </Group>
     </Panel>
   )

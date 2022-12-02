@@ -1,1 +1,1 @@
-export * from './test-modal-card'
+export * from './placeholder-modal'
