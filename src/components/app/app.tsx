@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 
 import { send, subscribe } from '@vkontakte/vk-bridge'
-import type { AppearanceType, VKUpdateConfigData } from '@vkontakte/vk-bridge'
+import type { VKUpdateConfigData } from '@vkontakte/vk-bridge'
 import {
   AdaptivityProvider,
   AppRoot,
@@ -11,6 +11,7 @@ import {
 } from '@vkontakte/vkui'
 
 import { Layout, SnackbarProvider, UserProvider } from '../'
+import { useTheme } from '../../hooks'
 import { currentPlatform } from '../../utils'
 
 import '@vkontakte/vkui/dist/vkui.css'
@@ -19,12 +20,16 @@ import { FriendsProvider } from '../friends-provider'
 
 export const App: FC = () => {
   const [platform, setPlatform] = useState<Platform>(currentPlatform)
-  const [appearance, setAppearance] = useState<AppearanceType>()
+  const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    console.log('App: ', theme)
+  }, [theme])
 
   useEffect(() => {
     const updateAppearance = (config: VKUpdateConfigData) => {
       if (config.appearance) {
-        setAppearance(config.appearance)
+        setTheme(config.appearance)
         console.log('Appearance changed:', config.appearance)
       }
     }
@@ -56,7 +61,7 @@ export const App: FC = () => {
   return (
     <ConfigProvider
       platform={platform}
-      appearance={appearance}
+      appearance={theme}
       webviewType={
         platform === Platform.VKCOM ? WebviewType.INTERNAL : WebviewType.VKAPPS
       }

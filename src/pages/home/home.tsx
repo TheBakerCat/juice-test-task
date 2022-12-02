@@ -4,7 +4,9 @@ import { FC, useEffect, useState } from 'react'
 import {
   Icon24Add,
   Icon28LightbulbOutline,
-  Icon28LogoVkColor
+  Icon28LogoVkColor,
+  Icon28MoonOutline,
+  Icon28SunOutline
 } from '@vkontakte/icons'
 import { send } from '@vkontakte/vk-bridge'
 import {
@@ -14,6 +16,7 @@ import {
   NavIdProps,
   Panel,
   PanelHeader,
+  PanelHeaderButton,
   SimpleCell,
   Spacing,
   Subhead,
@@ -22,6 +25,7 @@ import {
 } from '@vkontakte/vkui'
 import { ErrorSnackbar, FriendList } from '../../components'
 import { useFriends, useSnackbar, useUser } from '../../hooks'
+import { useTheme } from '../../hooks'
 import { ProfileCard } from './components'
 import styles from './home.module.pcss'
 
@@ -31,6 +35,11 @@ export const Home: FC<NavIdProps> = (props) => {
   const [flashlightAvailable, setFlashlightAvailable] = useState(false)
   const [flashlightEnabled, setFlashlightEnabled] = useState(false)
   const { setSnackbar } = useSnackbar()
+  const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    console.log('App2: ', theme)
+  }, [theme])
 
   useEffect(() => {
     Promise.all([
@@ -52,7 +61,17 @@ export const Home: FC<NavIdProps> = (props) => {
 
   return (
     <Panel {...props}>
-      <PanelHeader>
+      <PanelHeader
+        before={
+          <PanelHeaderButton
+            onClick={() => {
+              setTheme(theme === 'light' ? 'dark' : 'light')
+            }}
+          >
+            {theme === 'light' ? <Icon28MoonOutline /> : <Icon28SunOutline />}
+          </PanelHeaderButton>
+        }
+      >
         <Title
           level="2"
           weight="medium"
