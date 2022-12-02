@@ -1,17 +1,9 @@
 import { FC, Fragment } from 'react'
 
-import {
-  Epic,
-  Match,
-  ModalRoot,
-  View,
-  matchPopout,
-  useParams
-} from '@itznevikat/router'
+import { Epic, Match, ModalRoot, View } from '@itznevikat/router'
 import { Icon28NewsfeedLinesOutline, Icon28Profile } from '@vkontakte/icons'
 import {
   PanelHeader,
-  ScreenSpinner,
   SplitCol,
   SplitLayout,
   VKCOM,
@@ -20,7 +12,6 @@ import {
 
 import { AllFriends, Fallback, Home, PlaceholderPage } from '../../pages'
 import { PlaceholderModal } from '../../modals'
-import { TestActionSheet, TestAlert } from '../../popouts'
 import { useSnackbar } from '../../hooks'
 
 import { LayoutButton } from './button'
@@ -40,7 +31,6 @@ const Nav: FC = () => (
 
 export const Layout: FC = () => {
   const platform = usePlatform()
-  const { popout } = useParams()
   const { snackbar } = useSnackbar()
 
   return (
@@ -52,12 +42,6 @@ export const Layout: FC = () => {
             <PlaceholderModal nav="placeholder-modal" />
           </ModalRoot>
         }
-        /* eslint-disable react/jsx-key */
-        popout={matchPopout(popout, [
-          <ScreenSpinner id="screen-spinner" />,
-          <TestActionSheet nav="test-action-sheet" />,
-          <TestAlert nav="test-alert" />
-        ])}
         style={{
           justifyContent: 'center'
         }}
