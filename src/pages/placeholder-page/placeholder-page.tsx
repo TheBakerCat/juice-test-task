@@ -17,7 +17,7 @@ export const PlaceholderPage: FC<NavIdProps> = (props) => {
       <PanelHeader>
         <Title
           level="2"
-          weight="medium"
+          weight="1"
           style={{ display: 'flex', alignItems: 'center' }}
         >
           <Icon28LogoVkColor />

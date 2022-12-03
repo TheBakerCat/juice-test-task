@@ -64,6 +64,7 @@ export const Home: FC<NavIdProps> = (props) => {
       <PanelHeader
         before={
           <PanelHeaderButton
+            aria-label={'Change theme'}
             onClick={() => {
               setTheme(theme === 'light' ? 'dark' : 'light')
             }}
@@ -74,7 +75,7 @@ export const Home: FC<NavIdProps> = (props) => {
       >
         <Title
           level="2"
-          weight="medium"
+          weight="1"
           style={{ display: 'flex', alignItems: 'center' }}
         >
           <Icon28LogoVkColor />
@@ -82,7 +83,7 @@ export const Home: FC<NavIdProps> = (props) => {
         </Title>
       </PanelHeader>
 
-      <Group padding={'m'}>
+      <Group>
         <ProfileCard />
         <Spacing size={12} />
         <Group mode={'plain'}>
