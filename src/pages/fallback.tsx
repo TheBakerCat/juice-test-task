@@ -26,7 +26,7 @@ export const Fallback: FC<NavIdProps> = (props) => {
             </Button>
           }
         >
-          УУпс, здесь ничего нету!! :(
+          УУпс, здесь ничего нет!! :(
         </Placeholder>
       </Group>
     </Panel>

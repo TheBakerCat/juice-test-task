@@ -30,5 +30,3 @@ hmr: {
 ```
 Подробнее - https://github.com/vitejs/vite/discussions/5399.
 
-## Лицензия
-[MIT](LICENSE)

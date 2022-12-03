@@ -101,7 +101,7 @@ export const Home: FC<NavIdProps> = (props) => {
               if (!flashlightAvailable) {
                 setSnackbar(
                   <ErrorSnackbar>
-                    Я не могу включить ваш фонарик, возможно его просто нету =(
+                    Я не могу включить ваш фонарик, возможно его просто нет =(
                   </ErrorSnackbar>
                 )
               }
