@@ -11,7 +11,7 @@
     "lint": "eslint --fix ./src/",
     "format": "prettier --write ./src/",
     "serve": "vite preview",
-    "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=0.0.0.0 --port=5173 app_id=51493114 endpoints=[web, mobile, mvk]"
+    "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=0.0.0.0 --port=4173 app_id=51493114 endpoints=[web, mobile, mvk]"
   },
   "dependencies": {
     "@itznevikat/router": "0.1.0-beta28",

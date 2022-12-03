@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 
-import { send, subscribe } from '@vkontakte/vk-bridge'
+import { send } from '@vkontakte/vk-bridge'
 import type { VKUpdateConfigData } from '@vkontakte/vk-bridge'
 import {
   AdaptivityProvider,
@@ -30,18 +30,11 @@ export const App: FC = () => {
     const updateAppearance = (config: VKUpdateConfigData) => {
       if (config.appearance) {
         setTheme(config.appearance)
-        console.log('Appearance changed:', config.appearance)
       }
     }
 
     send('VKWebAppGetConfig').then((config) => {
       updateAppearance(config as VKUpdateConfigData)
-
-      subscribe(({ detail: { type, data } }) => {
-        if (type === 'VKWebAppUpdateConfig') {
-          updateAppearance(data as VKUpdateConfigData)
-        }
-      })
     })
 
     send('VKWebAppInit')
